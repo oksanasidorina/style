@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Личный кабинет</title>
+        <link rel="stylesheet" href="profile.css" />
+        <link rel="shortcut icon" href="image/icS.svg" type="image/x-icon" />
+    </head>
+
+    <body>
+    <header>
+        <div class="nav-left">
+            <a href="brend.html">О нас</a>
+            <a href="news.html">Новости</a>
+            <a href="support.html">Помощь</a>
+            <a href="catalog.html">Каталог</a>
+        </div>
+        <div class="site-title">STYLE</div>
+        <div class="nav-right">
+            <div class="cart-icon"> <a href="basket.html" ><img src="image/shop.svg" alt="search"/></a></div>
+            <a href="auth.html" class="btn-profile">Выход</a>
+        </div>
+    </header>
+    
+    <section>
+        <div class="pb">
+            <div class="profile-image" id="profileImage">
+                <img src="default-avatar.png" alt="Avatar" id="avatarImg">
+            </div>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="changeImage(event)">
+            <button class="change-photo-button" onclick="document.getElementById('fileInput').click()">Изменить фото</button>
+            <div class="block_img">
+                <img src="image/profile.svg" alt="">
+            </div>
+        </div>
+    
+        <div class="content">
+            <div class="block_inf">
+                <div class="label">
+                    <h3>Никнейм</h3>
+                    <input type="text" class="text-align">
+                </div>
+                <div class="label">
+                    <h3>Телефон</h3>
+                    <input type="text" class="text-align">
+                </div>
+                <div class="label">
+                    <h3>Дата рождения</h3>
+                    <input type="number" class="telephon" placeholder="День">
+                    <input type="number" class="telephon" placeholder="Месяц">
+                    <input type="number" class="telephon" placeholder="Год">
+                </div>
+                <div class="label">
+                    <form action="">
+                        <button>Редактировать</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    
+<button class="btn-publish" onclick="document.getElementById('modal').style.display='flex'">Опубликовать объявление</button>
+
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h3>Создать объявление</h3>
+        <input type="text" placeholder="Название товара" id="productTitle"><br>
+        <input type="text" placeholder="Описание товара" id="productDescription"><br>
+        <input type="number" placeholder="Цена" id="productPrice"><br>
+        <input type="file" id="productImage"><br>
+        <button onclick="publish()">Опубликовать</button>
+        <button onclick="document.getElementById('modal').style.display='none'">Закрыть</button>
+    </div>
+</div>
+
+<div id="announcementList"></div>
+
+<script>
+
+window.onload = function() {
+        const savedImage = localStorage.getItem('profileImage');
+        if (savedImage) {
+            document.getElementById('avatarImg').src = savedImage;
+        }
+    };
+
+    function changeImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('avatarImg').src = e.target.result;
+                localStorage.setItem('profileImage', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function publish() {
+        const title = document.getElementById('productTitle').value;
+        const description = document.getElementById('productDescription').value;
+        const price = document.getElementById('productPrice').value;
+        const image = document.getElementById('productImage').files[0];
+        
+        if (title && description && price && image) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(image);
+            const titleElem = document.createElement('h4');
+            titleElem.textContent = title;
+            const descriptionElem = document.createElement('p');
+            descriptionElem.textContent = description;
+            const priceElem = document.createElement('p');
+            priceElem.textContent = `Цена: ${price} ₽`;
+
+            card.appendChild(img);
+            card.appendChild(titleElem);
+            card.appendChild(descriptionElem);
+            card.appendChild(priceElem);
+
+            document.getElementById('announcementList').appendChild(card);
+            document.getElementById('modal').style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>

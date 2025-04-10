@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина</title>
+    <link rel="stylesheet" href="basket.css">
+    <link rel="shortcut icon" href="image/icS.svg" type="image/x-icon">
+</head>
+<body>
+
+    <header>
+        <div class="nav-left">
+            <a href="brend.html">О нас</a>
+            <a href="news.html">Новости</a>
+            <a href="support.html">Помощь</a>
+            <a href="index.html">Каталог</a>
+        </div>
+        <div class="site-title">STYLE</div>
+        <div class="nav-right">
+            <div class="cart-icon"> <a href="" ><img src="image/shop.svg" alt="search"
+            /></a></div>
+            <a href="profile.html" class="btn-profile">Личный кабинет</a>
+        </div>
+    </header>
+<body>
+
+<h2>Корзина</h2>
+<div id="cart-container"></div>
+
+<script>
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function displayCart() {
+        const cartContainer = document.getElementById('cart-container');
+        cartContainer.innerHTML = '';
+
+        cart.forEach((product, index) => {
+            const productDiv = document.createElement('div');
+            productDiv.classList.add('cart-item');
+            productDiv.innerHTML = `
+                <span>${product}</span>
+                <button class="remove-button" onclick="removeFromCart(${index})">Удалить</button>
+            `;
+            cartContainer.appendChild(productDiv);
+        });
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        displayCart();
+    }
+
+    displayCart();
+</script>
+
+</body>
+</html>
